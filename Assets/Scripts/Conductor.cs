@@ -23,6 +23,7 @@ public class Conductor : MonoBehaviour
 
     //Current song position, in beats
     private float songPositionInBeats;
+    public float SongPositionInBeats { get { return songPositionInBeats; } }
 
     //How many seconds have passed since the song started
     private float dspSongTime;
@@ -43,10 +44,12 @@ public class Conductor : MonoBehaviour
     private float loopPositionInBeats;
     #endregion
 
+    //Tracks the next beat to keep account of 
     private float beatTracker;
 
-
+    
     public delegate void Ping();
+    //Send a ping to all events listening to this be@t
     public event Ping OnBeat;
 
     void Start()
@@ -63,31 +66,49 @@ public class Conductor : MonoBehaviour
         //Start the music
         musicSource.Play();
 
+        //The first beat to look out for
         beatTracker = 1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //determine how many seconds since the song started
         songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
 
         //determine how many beats since the song started
-        songPositionInBeats = songPosition / secPerBeat;
+        songPositionInBeats = (songPosition / secPerBeat) + 1f;
 
         //calculate the loop position
-        if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop)
+        if (songPositionInBeats >= ((completedLoops + 1) * beatsPerLoop) + 1)
             completedLoops++;
         loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
 
+        //Calculate the difference between currect position in beats and next tracked beat
         float beatDiff = songPositionInBeats - beatTracker;
 
-        if (beatDiff < 0.05f && beatDiff > 0)
+        //if difference is positive, a new beat is registered
+        if (beatDiff > 0)
         {
+            //next beat tracked
             beatTracker = Mathf.Ceil(songPositionInBeats);
+            //Ping everyone listening for a beat
             OnBeat();
         }
 
 
     }
+
+    public float CalculateSongPosition(double dspTime)
+    {
+        //determine how many seconds since the song started
+         return (float)(dspTime - dspSongTime - firstBeatOffset);
+    }
+
+    public float CalculateSongPositionInBeats(double dspTime)
+    {
+        //determine how many seconds since the song started
+        return (((float)(dspTime - dspSongTime - firstBeatOffset)) / secPerBeat ) + 1f;
+    }
+
+
 }
