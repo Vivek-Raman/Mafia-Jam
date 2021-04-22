@@ -32,7 +32,7 @@ public class BeatTest : MonoBehaviour
 
     private void RegisterInputTime(float inputTimeInBeats, Action action)
     {
-        if (Mathf.Abs(inputTimeInBeats - Mathf.Round(i_conductor.SongPositionInBeats)) < .1f)
+        if (Mathf.Abs(inputTimeInBeats - Mathf.Round(i_conductor.SongPositionInBeats)) < .075f)
         {
             t_beatSprite.GetComponentInChildren<SpriteRenderer>().DOColor(Color.green, .04f);
 
