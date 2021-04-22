@@ -5,7 +5,7 @@ using UnityEngine;
 public class RegisterInput : MonoBehaviour
 {
 
-    public delegate void PingWithInfo(float inputTime);
+    public delegate void PingWithInfo(float inputTime, Action action);
     //Send a ping to all events listening to this be@t
     public event PingWithInfo OnInput;
 
@@ -20,9 +20,30 @@ public class RegisterInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            OnInput( i_conductor.CalculateSongPositionInBeats((float)AudioSettings.dspTime));
+            OnInput(i_conductor.CalculateSongPositionInBeats((float)AudioSettings.dspTime), Action.up);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            OnInput(i_conductor.CalculateSongPositionInBeats((float)AudioSettings.dspTime), Action.left);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            OnInput(i_conductor.CalculateSongPositionInBeats((float)AudioSettings.dspTime), Action.right);
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            OnInput(i_conductor.CalculateSongPositionInBeats((float)AudioSettings.dspTime), Action.down);
         }
     }
+}
+
+public enum Action
+{ 
+    up,
+    down,
+    left,
+    right
 }
