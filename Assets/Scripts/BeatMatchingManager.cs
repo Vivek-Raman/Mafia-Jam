@@ -4,8 +4,9 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using Cinemachine;
+using UnityEngine.Events;
 
-public class BeatTest : MonoBehaviour
+public class BeatMatchingManager : MonoBehaviour
 {
     private Transform t_beatSprite;
     private Conductor i_conductor;
@@ -14,6 +15,12 @@ public class BeatTest : MonoBehaviour
 
     private Vector3 c_origTransform;
     private Vector3 c_hitTransform;
+
+    //public delegate void Ping(Direction dir);
+    //public event Ping OnValid;
+    public UnityAction<Direction, float> OnValid;
+
+    public UnityAction<float> OnInvalid;
     
     // Start is called before the first frame update
     void Start()
@@ -27,43 +34,50 @@ public class BeatTest : MonoBehaviour
         c_hitTransform = c_origTransform * 4.0f;
 
         i_conductor.OnBeat += BeatHit;
-        i_inputSource.OnInput += RegisterInputTime; 
+        i_inputSource.OnInput += RegisterInputTime;
+        this.OnValid += Movement;
     }
 
-    private void RegisterInputTime(float inputTimeInBeats, Action action)
+    private void RegisterInputTime(float inputTimeInBeats, Direction dir)
     {
-        if (Mathf.Abs(inputTimeInBeats - Mathf.Round(i_conductor.SongPositionInBeats)) < .075f)
+        float inaccuracy = Mathf.Abs(inputTimeInBeats - Mathf.Round(i_conductor.SongPositionInBeats));
+        if (inaccuracy < .075f)
         {
             t_beatSprite.GetComponentInChildren<SpriteRenderer>().DOColor(Color.green, .04f);
-
-            switch (action)
-            {
-                case Action.up:
-                {
-                    t_beatSprite.position += Vector3.up;
-                    break;
-                }
-                case Action.down:
-                    {
-                        t_beatSprite.position += Vector3.down;
-                        break;
-                    }
-                case Action.left:
-                    {
-                        t_beatSprite.position += Vector3.left;
-                        break;
-                    }
-                case Action.right:
-                    {
-                        t_beatSprite.position += Vector3.right;
-                        break;
-                    }
-            }
+            OnValid?.Invoke(dir, inaccuracy);
         }
         else
         {
             t_beatSprite.GetComponentInChildren<SpriteRenderer>().DOColor(Color.red, .04f);
             i_impulseSource.GenerateImpulse(Camera.main.transform.right);
+            OnInvalid?.Invoke(inaccuracy);
+        }
+    }
+
+    private void Movement(Direction dir, float _)
+    {
+        switch (dir)
+        {
+            case Direction.up:
+
+                t_beatSprite.position += Vector3.up;
+                break;
+
+            case Direction.down:
+
+                t_beatSprite.position += Vector3.down;
+                break;
+
+            case Direction.left:
+
+                t_beatSprite.position += Vector3.left;
+                break;
+
+            case Direction.right:
+
+                t_beatSprite.position += Vector3.right;
+                break;
+
         }
     }
 

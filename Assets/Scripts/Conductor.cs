@@ -12,7 +12,7 @@ public class Conductor : MonoBehaviour
     // << This might be better handled by a scriptable object >>
 
     //Song beats per minute
-    //This is determined by the song you're trying to sync up to
+    [Tooltip("This is determined by the song you're trying to sync up to")]
     [SerializeField] private float songBpm;
 
     //The number of seconds for each song beat
@@ -31,10 +31,10 @@ public class Conductor : MonoBehaviour
     //an AudioSource attached to this GameObject that will play the music.
     private AudioSource musicSource;
     
-    //The offset to the first beat of the song in seconds
+    [Tooltip("The offset to the first beat of the song in seconds")]
     [SerializeField] private float firstBeatOffset;
 
-    //the number of beats in each loop
+    [Tooltip("the number of beats in each loop")]
     [SerializeField] private float beatsPerLoop;
 
     //the total number of loops completed since the looping clip first started
@@ -101,13 +101,25 @@ public class Conductor : MonoBehaviour
     public float CalculateSongPosition(double dspTime)
     {
         //determine how many seconds since the song started
-         return (float)(dspTime - dspSongTime - firstBeatOffset);
+         return (float)(dspTime - dspSongTime - firstBeatOffset );
+    }
+
+    public float CalculateSongPosition(double dspTime, double inputLag)
+    {
+        //determine how many seconds since the song started
+        return (float)(dspTime - dspSongTime - firstBeatOffset - inputLag);
     }
 
     public float CalculateSongPositionInBeats(double dspTime)
     {
         //determine how many seconds since the song started
-        return (((float)(dspTime - dspSongTime - firstBeatOffset)) / secPerBeat ) + 1f;
+        return ((float)((dspTime - dspSongTime - firstBeatOffset)) / secPerBeat ) + 1f;
+    }
+
+    public float CalculateSongPositionInBeats(double dspTime, double inputLag)
+    {
+        //determine how many seconds since the song started
+        return ((float)((dspTime - dspSongTime - firstBeatOffset - inputLag)) / secPerBeat) + 1f;
     }
 
 
