@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RegisterInput : MonoBehaviour
 {
@@ -17,26 +18,28 @@ public class RegisterInput : MonoBehaviour
         i_conductor = FindObjectOfType<Conductor>();
     }
 
-
-    // Update is called once per frame
-    void Update()
+    public void OnUp(InputAction.CallbackContext context)
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
+        if(context.phase == InputActionPhase.Started)
             OnInput(i_conductor.CalculateSongPositionInBeats(AudioSettings.dspTime, inputLagOffset), Direction.up);
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
+    }
+
+    public void OnLeft(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
             OnInput(i_conductor.CalculateSongPositionInBeats(AudioSettings.dspTime, inputLagOffset), Direction.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
+    }
+
+    public void OnRight(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
             OnInput(i_conductor.CalculateSongPositionInBeats(AudioSettings.dspTime, inputLagOffset), Direction.right);
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
+    }
+
+    public void OnDown(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
             OnInput(i_conductor.CalculateSongPositionInBeats(AudioSettings.dspTime, inputLagOffset), Direction.down);
-        }
     }
 }
 
