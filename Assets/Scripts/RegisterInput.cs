@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RegisterInput : MonoBehaviour
@@ -23,7 +21,6 @@ public class RegisterInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.W))
         {
             OnInput(i_conductor.CalculateSongPositionInBeats(AudioSettings.dspTime, inputLagOffset), Direction.up);

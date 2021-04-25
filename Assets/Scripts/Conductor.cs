@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Conductor : MonoBehaviour
 {
@@ -47,10 +46,9 @@ public class Conductor : MonoBehaviour
     //Tracks the next beat to keep account of 
     private float beatTracker;
 
-    
-    public delegate void Ping();
+ 
     //Send a ping to all events listening to this be@t
-    public event Ping OnBeat;
+    public UnityAction OnBeat;
 
     void Start()
     {
@@ -92,7 +90,7 @@ public class Conductor : MonoBehaviour
             //next beat tracked
             beatTracker = Mathf.Ceil(songPositionInBeats);
             //Ping everyone listening for a beat
-            OnBeat();
+            OnBeat?.Invoke();
         }
 
 
