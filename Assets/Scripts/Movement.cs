@@ -3,6 +3,8 @@ using DG.Tweening;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] private float cellSize = 2f;
+    [SerializeField] private float duration = 0.1f;
 
     private Transform t_beatSprite;
     private BeatMatchingManager i_beatMatch;
@@ -22,22 +24,22 @@ public class Movement : MonoBehaviour
         {
             case Direction.up:
 
-                t_beatSprite.DOMoveY(t_beatSprite.position.y + 1.0f, 0.1f);
+                t_beatSprite.DOMoveY(t_beatSprite.position.y + cellSize, duration);
                 break;
 
             case Direction.down:
 
-                t_beatSprite.DOMoveY(t_beatSprite.position.y - 1.0f, 0.1f);
+                t_beatSprite.DOMoveY(t_beatSprite.position.y - cellSize, duration);
                 break;
 
             case Direction.left:
 
-                t_beatSprite.DOMoveX(t_beatSprite.position.x - 1.0f, 0.1f);
+                t_beatSprite.DOMoveX(t_beatSprite.position.x - cellSize, duration);
                 break;
 
             case Direction.right:
 
-                t_beatSprite.DOMoveX(t_beatSprite.position.x + 1.0f, 0.1f);
+                t_beatSprite.DOMoveX(t_beatSprite.position.x + cellSize, duration);
                 break;
 
         }

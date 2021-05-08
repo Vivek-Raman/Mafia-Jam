@@ -1,5 +1,4 @@
-﻿using Ingredients;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace Sandwich
@@ -16,7 +15,7 @@ public class Module : MonoBehaviour
 
     protected void Update()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
+        if (!Input.GetKeyDown(KeyCode.Space)) return; // TODO: replace with Input system
 
         // check if player is on tile
         if (!Physics2D.OverlapCircle(this.transform.position, .5f, playerMask)) return;

@@ -1,13 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Ingredients;
 using Sandwich;
 using UnityEngine;
 
+namespace Player
+{
 public class SandwichBuilder : MonoBehaviour
 {
-    [SerializeField] private List<Ingredient> currentSandwich = new List<Ingredient>();
+    [SerializeField] private PreparationBoard prepBoard = null;
 
     private void OnEnable()
     {
@@ -16,7 +14,7 @@ public class SandwichBuilder : MonoBehaviour
 
     private void OnDisable()
     {
-        Module.playerInteractOnModuleAction += OnInteractionWithModule;
+        Module.playerInteractOnModuleAction -= OnInteractionWithModule;
     }
 
     private void OnInteractionWithModule(Ingredient ingredient)
@@ -25,6 +23,7 @@ public class SandwichBuilder : MonoBehaviour
 
         // TODO: check if interaction is valid
 
-        currentSandwich.Add(ingredient);
+        prepBoard.AddIngredient(ingredient);
     }
+}
 }
